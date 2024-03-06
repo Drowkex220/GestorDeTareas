@@ -1,0 +1,334 @@
+* {
+    margin: 0 !important;
+    box-sizing: inherit;
+}
+
+
+/*HEADER*/
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    padding-left: 30px;
+    background-color: #298df8;
+    color: white;
+    height: 11%;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+
+
+}
+
+.user-data {
+    display: flex;
+
+    flex-direction: column;
+
+    background-color: rgb(255, 255, 255);
+    padding: 12px;
+    border-radius: 20px;
+
+}
+
+.user-data p {
+    margin-bottom: 0;
+    color: black;
+
+}
+
+.login-options {
+    display: flex;
+
+    align-items: center;
+    justify-content: right;
+
+}
+
+.options {
+    margin-left: 50%;
+    padding: 10px;
+
+    border-radius: 0px;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+
+.logout {
+    padding: 10px;
+    padding-right: 20px;
+    border-radius: 0px;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+/*NAV*/
+
+.nav-1 {
+
+    padding-top: 20px;
+    padding-left: 20px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
+}
+
+.nav-h {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px;
+
+}
+
+.nav-h li {
+    margin-right: 0;
+}
+
+.nav-h a {
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav-h a:hover {
+    background-color: #393939;
+}
+
+
+
+.nav-1 li {
+    margin-right: 0;
+}
+
+.nav-1 a {
+    text-decoration: none;
+    color: black;
+    display: block;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.nav-1 a:hover {
+    background-color: #aff8ff;
+}
+
+
+
+/*BODY*/
+
+#main_container {
+    padding-left: 50px;
+    padding-right: 50px;
+
+    min-height: 100vh;
+}
+
+table {
+    border-radius: 10px !important;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+
+
+}
+
+
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+#content {
+    flex: 1;
+    padding: 50px;
+    padding-left: 0px;
+    box-sizing: border-box;
+
+}
+
+
+/*FOOTER*/
+footer {
+
+    background-color: rgb(103, 185, 244);
+    padding: 60px;
+    color: white;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+/*TABLE*/
+table {
+
+
+    font-family: futura-pt, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 15px;
+    margin-left: 0;
+    overflow: hidden;
+}
+thead {
+
+    background-color: #298df8 !important;
+
+    color: white;
+}
+
+
+th {
+    padding: 5px;
+    text-align: center;
+
+}
+
+table,
+td {
+    padding: 8px 8px 8px 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #eff2f5;
+}
+
+tr:not(:first-child):hover {
+    background-color: rgba(114, 114, 113, 0.2);
+}
+
+table a {
+    width: auto;
+}
+
+td {
+        margin-top: 5px !important;
+}
+
+.fa-eye {
+    color: rgb(61, 206, 255)
+}
+.fa-edit {
+    color: rgb(255, 187, 0)
+}
+.fa-trash {
+    color: rgb(250, 50, 50);
+}
+
+
+
+/*BUTTON*/
+
+.content .btn{
+    margin: 10px !important;
+    margin-bottom: 20px !important;
+    margin-left: 0 !important;
+}
+
+.list-btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+.datos-container {
+    background-color: rgb(235, 235, 235);
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 5vh;
+    justify-content: right;
+}
+
+form .btn{
+    margin-left: 0 !important;
+}
+
+#logOut {
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    float: right;
+
+}
+
+#logOut a:hover {
+    background-color: #f58b8b;
+}
+
+option {
+    width: 10%;
+}
+
+
+/*FORMS*/
+.form-control {
+    width: 90%;
+}
+
+.login-content {
+padding-left: 30% ;
+}
+.formulario {
+    margin-bottom: 1%;
+    border: solid;
+    border-width: 2px;
+    border-radius: 6px;
+    border-color: #ddd;
+    padding: 1%;
+    width: 90%;
+    padding: 20px;
+}
+
+.datos {
+    margin-bottom: 40px !important;
+}
+
+.datos .col {
+    margin: 4px;
+}
+
+
+.error {
+    color: red;
+}
+
+.foto-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.foto-item {
+    overflow: hidden;
+}
+
+.foto-item img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
