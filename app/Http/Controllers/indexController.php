@@ -7,8 +7,16 @@ use App\Models\Cliente;
 use App\Models\Tarea;
 
 
+/**
+ * Controlador para la página de inicio.
+ */
 class indexController extends Controller
 {
+      /**
+     * Muestra la página de inicio con datos de las tareas.
+     *
+     * @return \Illuminate\View\View  Vista de la página de inicio.
+     */
     public function index()
     {
         // Obtener todos los clientes

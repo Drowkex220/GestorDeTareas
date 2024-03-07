@@ -32,8 +32,12 @@
                         <td>{{ $tarea['FechaCreacion'] }}</td>
                         <td>
                             <a href="{{ route('detallesTarea', ['id' => $tarea['IDTarea']]) }}" class="info"><i class="fa fa-eye fa-lg info"></i></a>
-                            <a href="{{ route('modTareas', ['id' => $tarea['IDTarea']]) }}" class="warning"><i class="fa fa-edit fa-lg warning"></i></a>
-                            <a href="{{ route('formDeleteTarea', ['id' => $tarea->IDTarea]) }}" class="danger"><i class="fa fa-trash fa-lg"></i></a>
+                            @if (auth()->user()->permiso == 'admin')
+                            <a href="{{ route('modTareas', ['id' => $tarea->IDTarea]) }}" ><i
+                                    class="fa fa-edit fa-lg"></i></a>
+                            <a href="{{ route('formDeleteTarea', ['id' => $tarea->IDTarea]) }}" ><i
+                                    class="fa fa-trash fa-lg"></i></a>
+                        @endif
                         </td>
                     </tr>
                 @endforeach

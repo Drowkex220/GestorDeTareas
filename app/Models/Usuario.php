@@ -10,14 +10,42 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Clase Usuario
+ *
+ * Esta clase representa un usuario en el sistema.
+ *
+ * @package App\Models
+ */
 class Usuario extends Model implements AuthenticatableContract
 {
     use Authenticatable;
     use HasFactory;
+
+    /**
+     * Nombre de la tabla asociada con el modelo.
+     *
+     * @var string
+     */
     protected $table = 'usuariosgt';
+    /**
+     * Nombre de la clave primaria del modelo.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
+    /**
+     * Indica si el modelo debe ser marcado con marcas de tiempo.
+     *
+     * @var bool
+     */
     public $timestamps = false; // Suponemos que no tienes timestamps en esta tabla
 
+    /**
+     * Los atributos que son asignables en masa.
+     *
+     * @var array
+     */
     protected $fillable = [
         'nombre',
         'nombre_usuario',
@@ -28,17 +56,19 @@ class Usuario extends Model implements AuthenticatableContract
     ];
 
 
+    /**
+     * Los atributos que no son asignables en masa.
+     *
+     * @var array
+     */
 
     protected $guarded = [
         'id',
         // Otros campos que no deseas permitir que se asignen en masa
     ];
 
-
-    //AUTENTICACION//
-
     /**
-     * Get the name of the unique identifier for the user.
+     * Obtiene el nombre del identificador único para el usuario.
      *
      * @return string
      */
@@ -48,7 +78,7 @@ class Usuario extends Model implements AuthenticatableContract
     }
 
     /**
-     * Get the password for the user.
+     * Obtiene la contraseña del usuario.
      *
      * @return string
      */
@@ -58,10 +88,9 @@ class Usuario extends Model implements AuthenticatableContract
     }
 
 
-    //GESTION//
 
     /**
-     * Obtener usuarios con permiso de operario
+     * Obtiene usuarios con permiso de operario.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -69,7 +98,12 @@ class Usuario extends Model implements AuthenticatableContract
     {
         return $this->where('permiso', 'operario')->get();
     }
-
+    /**
+     * Guarda un nuevo usuario en la base de datos.
+     *
+     * @param usuarioRequest $request La solicitud de usuario
+     * @return Usuario
+     */
     public static function guardarUsuario(usuarioRequest $request)
     {
         // Crea una nueva instancia del modelo Cliente con los datos proporcionados
@@ -88,7 +122,13 @@ class Usuario extends Model implements AuthenticatableContract
         // Devuelve el cliente creado
         return $usuario;
     }
-
+    /**
+     * Actualiza un usuario existente en la base de datos.
+     *
+     * @param int $id El ID del usuario a actualizar
+     * @param usuarioRequest $request La solicitud de actualización de usuario
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function actualizarUsuario($id, usuarioRequest $request)
     {
         // Obtener la tarea por su ID

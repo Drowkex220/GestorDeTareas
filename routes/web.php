@@ -48,13 +48,14 @@ Route::controller(addTareaController::class)->group(function () {
 });
 
 
-Route::controller(cuotaController::class)->group(function () {
+Route::controller(cuotaController::class)->middleware('auth')->group(function () {
     Route::get("addCuota", "cuotaForm")->name('addCuota');
     Route::get("modCuota/{id?}", "modCuota")->name('modCuota');
     Route::post("saveCuota/{modo?}", "saveCuota")->name('saveCuota');
     Route::get("cuotaMensual", "cuotaMensual")->name('cuotaMensual');
     Route::get("formDeleteCuota{id?}", "formDeleteCuota")->name("formDeleteCuota");
     Route::post("deleteCuota{id?}", "deleteCuota")->name("deleteCuota");
+    Route::get("getPdf/{id?}", "getPdf")->name("getPdf");
 
 
 });
@@ -85,7 +86,10 @@ Route::controller(listasController::class)->group(function () {
 
     Route::get("listaTareas", "listaTareas")->name('listaTareas')->middleware('auth');
     Route::get("listaFiltrarTareas", "filtrarTareas")->name('listaFiltrarTareas')->middleware('auth');
+    Route::get("listaFiltrarCuotas", "filtrarCuotas")->name('listaFiltrarCuotas')->middleware('auth');
     Route::post("resultadoFiltrado", "resultadoFiltrado")->name("resultadoFiltrado")->middleware('auth');
+    Route::post("resultadoFiltradoCuotas", "resultadoFiltradoCuotas")->name("resultadoFiltradoCuotas")->middleware('auth');
+
     Route::get("listaCuotas", "listaCuotas")->name('listaCuotas')->middleware('auth');
     Route::get("listaUsuarios", "listaUsuarios")->name('listaUsuarios')->middleware('auth');
     Route::get("listaClientes", "listaClientes")->name('listaClientes')->middleware('auth');

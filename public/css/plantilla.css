@@ -40,9 +40,11 @@ header {
 
 .login-options {
     display: flex;
-
+    background-color:  rgb(103, 185, 244);
     align-items: center;
     justify-content: right;
+    border-radius: 50px;
+    padding: 5px;
 
 }
 
@@ -288,11 +290,19 @@ option {
     width: 90%;
 }
 
+label {
+    font-weight: bold;
+}
+
+select {
+    width: 66.5% !important;
+}
+
 .login-content {
 padding-left: 30% ;
 }
 .formulario {
-    margin-bottom: 1%;
+    margin-bottom: 2% !important;
     border: solid;
     border-width: 2px;
     border-radius: 6px;
@@ -306,6 +316,9 @@ padding-left: 30% ;
     margin-bottom: 40px !important;
 }
 
+form h4 {
+    color:  #298df8;
+}
 .datos .col {
     margin: 4px;
 }
@@ -331,4 +344,9 @@ padding-left: 30% ;
     height: auto;
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+
+#main_title {
+    color: white;
 }

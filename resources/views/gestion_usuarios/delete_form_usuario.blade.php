@@ -10,11 +10,11 @@
         @csrf
 
 
-        <h2>Datos</h2>
+        <h4>Datos</h4>
 
         <div class="data">
-            <p>Nombre de usuario: {{ $usuario->nombre_usuario }}</p>
-            <p>Permiso: {{ $usuario->permiso }}</p>
+            <p><strong>Nombre de usuario: </strong>{{ $usuario->nombre_usuario }}</p>
+            <p><strong>Permiso:</strong> {{ $usuario->permiso }}</p>
 
         </div>
         <button type="submit" class=" btn btn-danger">Borrar</button>

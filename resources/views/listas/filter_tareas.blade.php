@@ -12,8 +12,8 @@
 
     <form action="{{ route('resultadoFiltrado') }}" method="POST" class="formulario form form-control">
         @csrf
-        <div class="form-row">
-            <div class="form-group col-md-3">
+        <div class="form row">
+            <div class="form-group col-6">
                 <label for="campo">Campo:</label>
                 <select class="form-control" id="campo" name="campo">
                     <option value="IDTarea">ID Tarea</option>
@@ -22,12 +22,12 @@
                     <!-- Agrega más opciones según tus campos -->
                 </select>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-6">
                 <label for="termino">Término de búsqueda:</label>
                 <input type="text" class="form-control" id="termino" name="termino">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
+        <button type="submit" class="btn btn-primary col-12">Buscar</button>
     </form>
     <table >
         <thead >

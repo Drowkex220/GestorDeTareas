@@ -4,6 +4,6 @@
 
 @section('content')
 <div class="container">
-   <h1>Página de inicio</h1>
+   <h1>Inicio</h1>
 </div>
 @endsection

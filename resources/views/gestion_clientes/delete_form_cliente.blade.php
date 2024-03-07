@@ -10,11 +10,11 @@
         @csrf
 
 
-        <h2>Datos</h2>
+        <h4>Datos</h4>
 
         <div class="data">
-            <p>CIF: {{ $cliente->cif }}</p>
-            <p>Nombre: {{ $cliente->nombre }}</p>
+            <p><strong>CIF:</strong> {{ $cliente->cif }}</p>
+            <p><strong>Nombre:</strong> {{ $cliente->nombre }}</p>
 
         </div>
         <button type="submit" class=" btn btn-danger">Borrar</button>

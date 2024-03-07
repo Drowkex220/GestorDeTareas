@@ -8,12 +8,39 @@ use App\Http\Requests\tareaRequest;
 use App\Http\Requests\updateTareaRequest;
 
 
+/**
+ * Clase Tarea
+ *
+ * Esta clase representa una tarea en el sistema.
+ *
+ * @package App\Models
+ */
 class Tarea extends Model
 {
-    protected $table = 'tareas';
-    protected $primaryKey = 'IDTarea';
-    public $timestamps = false;
 
+    /**
+     * Nombre de la tabla asociada con el modelo.
+     *
+     * @var string
+     */
+    protected $table = 'tareas';
+    /**
+     * Nombre de la clave primaria del modelo.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'IDTarea';
+    /**
+     * Indica si el modelo debe ser marcado con marcas de tiempo.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    /**
+     * Los atributos que son asignables.
+     *
+     * @var array
+     */
     protected $fillable = [
         'NIF_CIF',
         'PersonaContactoNombre',
@@ -37,33 +64,40 @@ class Tarea extends Model
 
 
     /**
-     * Obtiene todas las tareas desde la base de datos
+     * Obtiene todas las tareas desde la base de datos.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function obtenerTodasLasTareas()
     {
         return $this::all();
     }
 
-
     /**
-     * Obtiene solo las tareas con el estado en 'P'
+     * Obtiene solo las tareas con el estado en 'P'.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function obtenerTareasPendientes()
     {
         return $this::where('Estado', 'P')->get();
     }
 
-
     /**
-     * Se le pasa un ID a la funcion y se realiza una query a la base de datos por los registros con dicho id
+     * Obtiene una tarea por su ID.
+     *
+     * @param int $id El ID de la tarea
+     * @return mixed
      */
     public function obtenerTareaPorId($id)
     {
         return $this::find($id);
     }
-
     /**
-     * Permite guardar la tarea en la base de datos dado un objeto request con la informacion necesaria
+     * Permite guardar la tarea en la base de datos dado un objeto request con la información necesaria.
+     *
+     * @param tareaRequest $request La solicitud de la tarea
+     * @return Tarea
      */
     public static function guardarTarea(tareaRequest $request)
     {
@@ -82,7 +116,13 @@ class Tarea extends Model
         // Devolver la instancia de la Tarea guardada
         return $tarea;
     }
-
+    /**
+     * Actualiza una tarea existente en la base de datos.
+     *
+     * @param int $id El ID de la tarea a actualizar
+     * @param tareaRequest $request La solicitud de actualización de la tarea
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function actualizarTarea($id, tareaRequest $request)
     {
         // Obtener la tarea por su ID
@@ -112,6 +152,12 @@ class Tarea extends Model
         return response()->json(['mensaje' => 'Tarea actualizada correctamente'], 200);
     }
 
+     /**
+     * Actualiza una tarea existente en la base de datos utilizando una solicitud específica.
+     *
+     * @param int $id El ID de la tarea a actualizar
+     * @param updateTareaRequest $request La solicitud de actualización de la tarea
+     */
     public function updateTarea($id, updateTareaRequest $request)
     {
         $tarea = Tarea::find($id);
@@ -149,5 +195,4 @@ class Tarea extends Model
 
         //return redirect()->route('tareasPend')->with('success', 'Tarea actualizada correctamente.');
     }
-
 }

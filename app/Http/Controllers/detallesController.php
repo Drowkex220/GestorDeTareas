@@ -7,9 +7,19 @@ use App\Models\Tarea;
 use Illuminate\Support\Facades\Storage;
 
 
+/**
+ * Controlador para mostrar los detalles de una tarea.
+ */
 class detallesController extends Controller
 {
-    public function detallesTarea($id) {
+    /**
+     * Muestra los detalles de una tarea específica.
+     *
+     * @param  int  $id  ID de la tarea.
+     * @return \Illuminate\View\View       Vista con los detalles de la tarea.
+     */
+    public function detallesTarea($id)
+    {
         $tarea = Tarea::find($id);
 
         // Obtener la URL del archivo de resumen, si existe

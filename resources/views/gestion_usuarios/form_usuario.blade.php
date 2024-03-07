@@ -78,6 +78,17 @@
                         {{ $message }}</div>
                 @enderror
             </div>
+            <div class="col-12"></div>
+            <div class="col-5  p-2">
+                <label for="contrasenaR">Repetir contraseña</label>
+                <input type="password" class="form-control" id="contrasenaR" name="contrasenaR" placeholder="Contrasena"
+                    value="{{ old('contrasenaR') }}">
+
+                @error('contrasenaR')
+                    <div class="text-danger" style="color: red"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        {{ $message }}</div>
+                @enderror
+            </div>
 
         </div>
 

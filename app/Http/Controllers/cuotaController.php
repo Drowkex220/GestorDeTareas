@@ -14,8 +14,16 @@ use App\Models\Tarea;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 
+/**
+ * Controlador para la gestión de cuotas.
+ */
 class cuotaController extends Controller
 {
+    /**
+     * Muestra el formulario para agregar una nueva cuota.
+     *
+     * @return \Illuminate\View\View Vista con el formulario para agregar una cuota.
+     */
     public function cuotaForm()
     {
         $modo = "add";
@@ -23,10 +31,16 @@ class cuotaController extends Controller
         $tareas = Tarea::all();
         $clientes = Cliente::all();
 
-        echo("modo modificar");
+
         return view("gestion_cuotas/form_cuota", compact("cuotas", "tareas", "clientes", "modo"));
     }
-
+    /**
+     * Guarda una cuota nueva o actualizada en la base de datos.
+     *
+     * @param  \App\Http\Requests\cuotaRequest  $request   Datos de la cuota provenientes del formulario.
+     * @param  string  $modo                              Modo de operación ('add' para agregar, 'mod' para modificar).
+     * @return \Illuminate\View\View       Redirige a la lista de cuotas después de guardar.
+     */
     public function saveCuota(cuotaRequest $request, $modo)
     {
         $datosCuota = $request->validated();
@@ -38,20 +52,25 @@ class cuotaController extends Controller
 
             $cuota = (new Cuota())->actualizarCuota($request->id, $request);
 
-            echo("Modificado");
+            echo ("Modificado");
             return redirect()->route('listaCuotas');
         } else if ($modo == "add") {
 
             $cuota = (new Cuota())->guardarCuota($request);
 
-            echo("Añadido");
+            echo ("Añadido");
             return redirect()->route('listaCuotas');
         }
 
 
         return view("gestion_cuotas/save_cuota");
     }
-
+    /**
+     * Muestra el formulario para modificar una cuota existente.
+     *
+     * @param  int  $id  ID de la cuota a modificar.
+     * @return \Illuminate\View\View       Vista con el formulario para modificar una cuota.
+     */
     public function modCuota($id)
     {
         $modo = "mod";
@@ -60,10 +79,15 @@ class cuotaController extends Controller
         $tareas = Tarea::all();
         $clientes = Cliente::all();
 
-        echo("modo modificar");
+        echo ("modo modificar");
         return view("gestion_cuotas/form_cuota", compact("modo", "cuota", "cuotas", "tareas", "clientes"));
     }
-
+    /**
+     * Muestra el formulario para eliminar una cuota.
+     *
+     * @param  int  $id  ID de la cuota a eliminar.
+     * @return \Illuminate\View\View       Vista con el formulario para eliminar una cuota.
+     */
     public function formDeleteCuota($id)
     {
         $cuota = Cuota::find($id);
@@ -71,7 +95,12 @@ class cuotaController extends Controller
         return view('gestion_cuotas/delete_form_cuota', compact(["cuota"]));
     }
 
-
+    /**
+     * Elimina una cuota de la base de datos.
+     *
+     * @param  int  $id  ID de la cuota a eliminar.
+     * @return \Illuminate\Http\RedirectResponse       Redirige a la lista de cuotas después de eliminar.
+     */
     public function deleteCuota($id)
     {
 
@@ -86,12 +115,25 @@ class cuotaController extends Controller
 
         return redirect()->route('resultadoDelete', ["message" => $mensaje,  'route' => "listaCuotas"]);
     }
-
-    public function cuotaMensual() {
+    /**
+     * Genera las cuotas mensuales.
+     *
+     * @return \Illuminate\Http\RedirectResponse       Redirige a la lista de cuotas después de generar las cuotas mensuales.
+     */
+    public function cuotaMensual()
+    {
 
 
         Cuota::genCuotaMensual();
         return redirect()->route('listaCuotas');
+    }
 
+    public function getPdf($id)
+    {
+        $cuota = Cuota::find($id);
+        $cliente = Cliente::find($cuota->id_cliente);
+
+        $cuota::sendMail($cliente, $cuota);
+        return redirect()->route('listaCuotas');
     }
 }

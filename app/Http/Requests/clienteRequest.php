@@ -5,11 +5,13 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
-
+/**
+ * Clase para manejar las solicitudes de cliente.
+ */
 class clienteRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determina si el usuario está autorizado para realizar la solicitud.
      *
      * @return bool
      */
@@ -19,7 +21,7 @@ class clienteRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Obtiene las reglas de validación que se aplican a la solicitud.
      *
      * @return array
      */
@@ -40,7 +42,7 @@ class clienteRequest extends FormRequest
 
 
     /**
-     * Get the error messages for the defined validation rules.
+     * Obtiene los mensajes de error para las reglas de validación definidas.
      *
      * @return array
      */
@@ -62,19 +64,23 @@ class clienteRequest extends FormRequest
     }
 
 
+    /**
+     * Realiza validaciones adicionales después de que se hayan aplicado las reglas de validación predeterminadas.
+     *
+     * @return array
+     */
     public function after(): array
     {
         return [
             function (Validator $validator) {
-                if (!$this->validarCIF($this->input("cif"))) {
+                if (!$this->validDniCifNie($this->input("cif"))) {
                     $validator->errors()->add(
                         'NIF_CIF',
                         'No es un CIF valido'
                     );
                 }
                 if ($this->isValidIBAN($this->input("cuenta_corriente"))) {
-
-                } else{
+                } else {
                     $validator->errors()->add(
                         'cuenta_corriente',
                         'No es una Cuenta corriente valida '
@@ -86,60 +92,78 @@ class clienteRequest extends FormRequest
 
 
 
-
-    public function validarCIF($cif)
+    /**
+     * Valida el formato del CIF (Código de Identificación Fiscal).
+     *
+     * @param  string  $cif  CIF a validar.
+     * @return bool  True si el CIF es válido, de lo contrario, false.
+     */
+    function validDniCifNie($dni)
     {
-        // Eliminar espacios en blanco y convertir a mayúsculas
-        $cif = strtoupper(trim($cif));
-
-        // Expresión regular para verificar el formato del CIF
-        $formatoCorrecto = '/^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$/';
-
-        // Verificar si el CIF tiene el formato correcto
-        if (!preg_match($formatoCorrecto, $cif)) {
-            return false; // Devolver false si el formato es incorrecto
+        $cif = strtoupper($dni);
+        for ($i = 0; $i < 9; $i++) {
+            $num[$i] = substr($cif, $i, 1);
         }
-
-        $cif_codes = 'JABCDEFGHI';
-        $sum = (string)$this->getCifSum($cif);
-        $n = (10 - substr($sum, -1)) % 10;
-
-        if (preg_match('/^[ABCDEFGHJNPQRSUVW]{1}/', $cif)) {
-            if (in_array($cif[0], array('A', 'B', 'E', 'H'))) {
-                // Numerico
-                return ($cif[8] == $n);
-            } elseif (in_array($cif[0], array('K', 'P', 'Q', 'S'))) {
-                // Letras
-                return ($cif[8] == $cif_codes[$n]);
+        // Si no tiene un formato valido devuelve error
+        if (!preg_match('/((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)/', $cif)) {
+            return false;
+        }
+        // Comprobacion de NIFs estandar
+        if (preg_match('/(^[0-9]{8}[A-Z]{1}$)/', $cif)) {
+            if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($cif, 0, 8) % 23, 1)) {
+                return true;
             } else {
-                // Alfanumérico
-                if (is_numeric($cif[8])) {
-                    return ($cif[8] == $n);
-                } else {
-                    return ($cif[8] == $cif_codes[$n]);
-                }
+                return false;
             }
         }
-
+        // Algoritmo para comprobacion de codigos tipo CIF
+        $suma = $num[2] + $num[4] + $num[6];
+        for ($i = 1; $i < 8; $i += 2) {
+            $suma += (int)substr((2 * $num[$i]), 0, 1) + (int)substr((2 * $num[$i]), 1, 1);
+        }
+        $n = 10 - substr($suma, strlen($suma) - 1, 1);
+        // Comprobacion de NIFs especiales (se calculan como CIFs o como NIFs)
+        if (preg_match('/^[KLM]{1}/', $cif)) {
+            if ($num[8] == chr(64 + $n) || $num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr($cif, 1, 8) % 23, 1)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // Comprobacion de CIFs
+        if (preg_match('/^[ABCDEFGHJNPQRSUVW]{1}/', $cif)) {
+            if ($num[8] == chr(64 + $n) || $num[8] == substr($n, strlen($n) - 1, 1)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // Comprobacion de NIEs
+        // T
+        if (preg_match('/^[T]{1}/', $cif)) {
+            if ($num[8] == preg_match('/^[T]{1}[A-Z0-9]{8}$/', $cif)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // XYZ
+        if (preg_match('/^[XYZ]{1}/', $cif)) {
+            if ($num[8] == substr('TRWAGMYFPDXBNJZSQVHLCKE', substr(str_replace(array('X', 'Y', 'Z'), array('0', '1', '2'), $cif), 0, 8) % 23, 1)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // Si todavía no se ha verificado devuelve error
         return false;
     }
-
-
-    function getCifSum($cif)
-    {
-        $sum = $cif[2] + $cif[4] + $cif[6];
-
-        for ($i = 1; $i < 8; $i += 2) {
-            $tmp = (string) (2 * $cif[$i]);
-
-            $tmp = $tmp[0] + ((strlen($tmp) == 2) ?  $tmp[1] : 0);
-
-            $sum += $tmp;
-        }
-
-        return $sum;
-    }
-
+    /**
+     * Valida el formato de la cuenta corriente IBAN.
+     *
+     * @param  string  $iban  IBAN a validar.
+     * @return bool  True si el IBAN es válido, de lo contrario, false.
+     */
     function isValidIBAN($iban)
     {
 

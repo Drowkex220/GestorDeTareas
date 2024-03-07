@@ -3,11 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+/**
+ * Clase para manejar las solicitudes de actualización de tarea.
+ */
 class updateTareaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
+   /**
+     * Determina si el usuario está autorizado para realizar la solicitud.
      *
      * @return bool
      */
@@ -15,9 +17,8 @@ class updateTareaRequest extends FormRequest
     {
         return true;
     }
-
-    /**
-     * Get the validation rules that apply to the request.
+  /**
+     * Obtiene las reglas de validación que se aplican a la solicitud.
      *
      * @return array
      */
@@ -34,8 +35,9 @@ class updateTareaRequest extends FormRequest
         ];
     }
 
+
     /**
-     * Get the error messages for the defined validation rules.
+     * Obtiene los mensajes de error para las reglas de validación definidas.
      *
      * @return array
      */

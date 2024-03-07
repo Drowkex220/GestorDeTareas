@@ -10,11 +10,11 @@
         @csrf
 
 
-        <h2>Datos</h2>
+        <h4>Datos</h4>
 
         <div class="data">
-            <p>Descripción: {{ $tarea->Descripcion }}</p>
-            <p>Estado: {{ $tarea->Estado }}</p>
+            <p><strong>Descripción: </strong>{{ $tarea->Descripcion }}</p>
+            <p><strong>Estado:</strong> {{ $tarea->Estado }}</p>
 
         </div>
         <button type="submit" class=" btn btn-danger">Borrar</button>

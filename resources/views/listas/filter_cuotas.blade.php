@@ -1,21 +1,42 @@
 @extends('layout.plantilla')
 
-@section('title', 'Lista de cuotas')
+@section('title', 'Lista de Tareas')
 
 @section('content')
-    <h1>Listado de cuotas</h1>
-
+    <h1>Listado de Cuotas</h1>
 
     @if (auth()->user()->permiso == 'admin')
         <a href="{{ route('addCuota') }}" class="btn btn-info"><i class="fa-solid fa-plus"></i> Añadir Cuota</a>
-        <a href="{{ route('cuotaMensual') }}" class="btn float-right btn-success cuota-btn"><i
-                class="fa-solid fa-calendar"></i>Cuota Mensual</a>
-        <a href={{ url('listaFiltrarCuotas') }} class="btn btn-warning"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar
-            Cuotas</a>
     @endif
 
-    <table>
-        <thead>
+
+    <form action="{{ route('resultadoFiltradoCuotas') }}" method="POST" class="formulario form form-control">
+        @csrf
+        <div class="form row">
+            <div class="form-group col-6">
+                <label for="campo">Campo:</label>
+                <select class="form-control" id="campo" name="campo">
+                    <option value="id">ID Cuota</option>
+                    <option value="concepto">Concepto</option>
+                    <option value="emision">Emisión</option>
+                    <option value="importe">Importe</option>
+                    <option value="pagada">Pagada</option>
+                    <option value="fecha_pago">Fecha de Pago</option>
+                    <option value="notas">Notas</option>
+                    <option value="id_cliente">CIF Cliente</option>
+                    <option value="id_tarea">Tarea</option>
+                </select>
+
+            </div>
+            <div class="form-group col-6">
+                <label for="termino">Término de búsqueda:</label>
+                <input type="text" class="form-control" id="termino" name="termino">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary col-12">Filtrar</button>
+    </form>
+    <table >
+        <thead >
             <tr>
                 <th>ID cuota</th>
                 <th>Concepto</th>
@@ -37,13 +58,11 @@
                     <td>{{ $cuota->concepto }}</td>
                     <td>{{ $cuota->fecha_emision }}</td>
                     <td>{{ $cuota->importe }}</td>
-                    <td>
-                        @if ($cuota->pagada == 1)
-                            pagada
+                    <td>@if ($cuota->pagada == 1)
+                        pagada
                         @else
-                            sin pagar
-                        @endif
-                    </td>
+                        sin pagar
+                        @endif</td>
                     <td>{{ $cuota->fecha_pago }}</td>
                     <td>{{ $cuota->notas }}</td>
                     <td>{{ $cuota->cliente->cif }}</td>
@@ -55,8 +74,6 @@
 
                     <td>
 
-                        <a href="{{ route('getPdf', ['id' => $cuota->id]) }}" class=""><i
-                            class="fa fa-file-pdf fa-lg"></i></a>
                         <a href="{{ route('modCuota', ['id' => $cuota->id]) }}" class=""><i
                                 class="fa fa-edit fa-lg"></i></a>
                         <a href="{{ route('formDeleteCuota', ['id' => $cuota->id]) }}" class=""><i

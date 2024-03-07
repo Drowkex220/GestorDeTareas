@@ -6,14 +6,43 @@ use App\Http\Requests\clienteRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Clase Cliente
+ *
+ * Esta clase representa un cliente en el sistema.
+ *
+ * @package App\Models
+ */
 class Cliente extends Model
 {
+
+    /**
+     * Nombre de la tabla asociada con el modelo.
+     *
+     * @var string
+     */
     protected $table = 'clientes';
 
+
+    /**
+     * Nombre de la clave primaria del modelo.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
+    /**
+     * Indica si el modelo debe ser marcado con marcas de tiempo.
+     *
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * Los atributos que son asignables.
+     *
+     * @var array
+     */
     protected $fillable = [
         'cif',
         'nombre',
@@ -27,11 +56,22 @@ class Cliente extends Model
         // Agrega aquí otros campos si es necesario
     ];
 
+    /**
+     * Obtiene todos los clientes con un importe mensual mayor a 10.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
     public function clientesConImporteMayorA10()
     {
         return $this->where('importe_c_mensual', '>', 10)->get();
     }
 
+    /**
+     * Obtiene el ID de un cliente por su CIF.
+     *
+     * @param string $cif El CIF del cliente
+     * @return int|null
+     */
     public static function obtenerIdPorCIF($cif)
     {
         $cliente = self::where('cif', $cif)->first();
@@ -40,6 +80,12 @@ class Cliente extends Model
         return $cliente ? $cliente->id : null;
     }
 
+    /**
+     * Guarda un nuevo cliente en la base de datos.
+     *
+     * @param clienteRequest $request Los datos del cliente proporcionados por el formulario
+     * @return Cliente
+     */
     public static function guardarCliente(clienteRequest $request)
     {
         $cliente = new Cliente();
@@ -59,7 +105,13 @@ class Cliente extends Model
 
         return $cliente;
     }
-
+    /**
+     * Actualiza un cliente existente en la base de datos.
+     *
+     * @param int $id El ID del cliente
+     * @param clienteRequest $request Los datos del cliente proporcionados por el formulario
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function actualizarCliente($id, clienteRequest $request)
     {
         // Obtener la tarea por su ID

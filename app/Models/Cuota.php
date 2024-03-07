@@ -15,17 +15,43 @@ use Illuminate\Support\Facades\Http;
 use App\Mail\correoMensual;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * Clase Cuota
+ *
+ * Esta clase representa una cuota en el sistema.
+ *
+ * @package App\Models
+ */
 class Cuota extends Model
 {
 
+    /**
+     * Nombre de la tabla asociada con el modelo.
+     *
+     * @var string
+     */
     protected $table = 'cuotas';
 
+    /**
+     * Nombre de la clave primaria del modelo.
+     *
+     * @var string
+     */
     protected  $primaryKey = "id";
 
+    /**
+     * Indica si el modelo debe ser marcado con marcas de tiempo.
+     *
+     * @var bool
+     */
     public $timestamps = false;
 
     use HasFactory;
-
+    /**
+     * Los atributos que son asignables.
+     *
+     * @var array
+     */
     protected $fillable = [
         'id_cuota',
         'cif',
@@ -40,23 +66,32 @@ class Cuota extends Model
         // Agrega aquí otros campos si es necesario
     ];
 
-
+    /**
+     * Define la relación con el modelo Cliente.
+     *
+     * @return BelongsTo
+     */
     public function cliente(): BelongsTo
     {
         return $this->belongsTo(Cliente::class, 'id_cliente', 'id');
     }
 
-
+    /**
+     * Define la relación con el modelo Tarea.
+     *
+     * @return BelongsTo
+     */
     public function tarea(): BelongsTo
     {
         return $this->belongsTo(Tarea::class, 'id_tarea', 'IDTarea');
     }
 
-
     /**
-     *Permite guardar la cuota en la base de datos dado un objeto request
+     * Guarda una nueva cuota en la base de datos.
+     *
+     * @param cuotaRequest $request Los datos de la cuota proporcionados por el formulario
+     * @return Cuota
      */
-
     public static function guardarCuota(cuotaRequest $request)
     {
 
@@ -80,7 +115,13 @@ class Cuota extends Model
 
         return $cuota;
     }
-
+    /**
+     * Actualiza una cuota existente en la base de datos.
+     *
+     * @param int $id El ID de la cuota
+     * @param cuotaRequest $request Los datos de la cuota proporcionados por el formulario
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function actualizarCuota($id, cuotaRequest $request)
     {
         // Obtener la tarea por su ID
@@ -110,7 +151,11 @@ class Cuota extends Model
         return response()->json(['mensaje' => 'Cuota actualizada correctamente'], 200);
     }
 
-
+    /**
+     * Genera cuotas mensuales para todos los clientes y las envía por correo electrónico.
+     *
+     * @return void
+     */
     public static function genCuotaMensual()
     {
         // Obtener todos los clientes
@@ -143,7 +188,26 @@ class Cuota extends Model
         }
     }
 
-    public static function genPDF($data)
+    public static function sendMail($cliente, $cuota)
+    {
+        $datos = $cliente;
+
+
+        $pdf = self::genPDF($datos->toArray(), $cuota);
+
+        // Enviar el correo con el PDF adjunto
+
+
+        Mail::to($cliente->correo)->send(new correoMensual($datos, $pdf));
+    }
+
+    /**
+     * Genera un PDF para la cuota mensual.
+     *
+     * @param array $data Los datos del cliente
+     * @return \Barryvdh\DomPDF\PDF
+     */
+    public static function genPDF($data, $cuota = null)
     {
 
         $currentCurrency = Http::withOptions(['verify' => false])->get('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json');
@@ -154,11 +218,23 @@ class Cuota extends Model
 
         $conversion = $currentCurrency['eur'][$data['moneda']];
         $moneda = $currencies[$data['moneda']];
-        // Cambiar el nombre de la variable de datos a 'cliente'
-        $pdf = Pdf::loadView('pdf.pdfFactura', ['data' => $data, 'conversion' => $conversion, "moneda" => $moneda]);
-        $pdf->setPaper('A4', 'portrait');
-        $pdf->render();
+        $fecha_emision = now();
 
-        return $pdf;
+        if ($cuota == null) {
+            $cuota = "factura mensual";
+            $pdf = Pdf::loadView('pdf.pdfFactura', ['data' => $data, 'conversion' => $conversion, "moneda" => $moneda, "fecha_emision" => $fecha_emision]);
+            $pdf->setPaper('A4', 'portrait');
+            $pdf->render();
+            return $pdf;
+        } else {
+            // Cambiar el nombre de la variable de datos a 'cliente'
+            $pdf = Pdf::loadView('pdf.pdfFactura', ['data' => $data, 'conversion' => $conversion, "moneda" => $moneda, "fecha_emision" => $fecha_emision, "cuota" => $cuota]);
+            $pdf->setPaper('A4', 'portrait');
+            $pdf->render();
+            return $pdf;
+        }
+
+
+
     }
 }

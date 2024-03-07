@@ -10,11 +10,11 @@
         @csrf
 
 
-        <h2>Datos</h2>
+        <h4>Datos</h4>
 
         <div class="data">
-            <p>Concepto: {{ $cuota->concepto }}</p>
-            <p>Estado: {{ $cuota->importe }}</p>
+            <p><strong>Concepto:</strong> {{ $cuota->concepto }}</p>
+            <p><strong>Estado: </strong>{{ $cuota->importe }}</p>
 
         </div>
         <button type="submit" class=" btn btn-danger">Borrar</button>

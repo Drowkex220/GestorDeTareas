@@ -53,7 +53,7 @@
         </div>
 
         <div class="col-1 login-options">
-
+            <i class="fa fa-circle-user fa-xl m-2"></i>
             <a href="{{ route('modUsuario', ['id' => auth()->user()->id]) }}" class="btn btn-warning options"><i
                     class="fa fa-gear"></i></a>
 
@@ -83,7 +83,7 @@
         <a href={{ route('index') }}><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>
         @auth
             <a href={{ route('tareasPend') }}><i class="fa fa-file-excel" aria-hidden="true"></i> Tareas
-                    Pendientes</a></li>
+                Pendientes</a></li>
 
             <a href={{ url('listaTareas') }}><i class="fa fa-briefcase" aria-hidden="true"></i> Lista de Tareas</a>
 
@@ -91,10 +91,10 @@
                 <a href={{ url('listaCuotas') }}><i class="fa fa-file" aria-hidden="true"></i> Lista de Cuotas</a>
 
                 <a href={{ url('listaClientes') }}><i class="fa fa-user-group" aria-hidden="true"></i> Lista de
-                        Clientes</a>
+                    Clientes</a>
 
                 <a href={{ url('listaUsuarios') }}><i class="fa fa-users" aria-hidden="true"></i> Lista de
-                        Usuarios</a>
+                    Usuarios</a>
             @endif
 
 
@@ -103,7 +103,7 @@
         @guest
             <a href={{ url('authCliente') }}><i class="fa fa-document" aria-hidden="true"></i> Proponer Tarea</a>
 
-            @endguest
+        @endguest
 
 
 
